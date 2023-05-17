@@ -1,0 +1,29 @@
+{
+	"marque_id" : {"$oid":"OOO1"},
+	"immat" : "AA-000-AA",
+	"date_immat" : "2012-03-26T23:20:16.000+00:00",
+	"prix" : 40000,
+	"type" : ["sportive", "citadine"],
+	"caracteristiques": 
+	{
+		"puissance": 1000,
+		"poids": 2000,
+		"longueur": 5,
+		"largeur": 3,
+		"carburant": "ethanol"
+	},
+	"couleur": "FFFFFF",
+}
+
+{
+	"nom" : "FIAT",
+	"annee_creation" : 1899,
+	"pays" : "Italie",
+}
+
+{
+	"voiture_id" : {"$oid":"OOO1"},
+	"date": "2012-03-26T23:20:16.000+00:00",
+	"description": "vidange",
+	"garage": "Garage de José"
+}
