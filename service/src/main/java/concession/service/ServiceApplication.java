@@ -9,6 +9,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import static com.mongodb.client.model.Filters.eq;
+import concession.mongoclient.MongoClientConcession;
 import org.bson.codecs.configuration.CodecProvider;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -28,15 +29,10 @@ public class ServiceApplication {
         // Replace the placeholder with your MongoDB deployment's connection string
         String uri = "mongodb://localhost:27017";
         
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase("concession");
-            MongoCollection<Document> collection = database.getCollection("voitures");
-            Document doc = collection.find().first();
-            if (doc != null) {
-                System.out.println(doc.toJson());
-            } else {
-                System.out.println("No matching documents found.");
-            }
-        }
+        MongoClientConcession concession = new MongoClientConcession(uri);
+        
+        concession.getVoitures();
+        concession.getMarques();
+        concession.getEntretiens();
     }
 }
