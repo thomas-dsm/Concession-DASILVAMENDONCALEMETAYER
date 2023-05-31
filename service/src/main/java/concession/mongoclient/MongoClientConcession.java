@@ -19,7 +19,7 @@ import org.bson.conversions.Bson;
  *
  * @author tdasilvamendonca
  */
-public class MongoClientConcession {
+public abstract class MongoClientConcession {
     private String url;
 
     public MongoClientConcession(String url) {
@@ -34,45 +34,9 @@ public class MongoClientConcession {
         this.url = url;
     }
     
-    public void getVoitures(){
-        
-        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
-            MongoDatabase database = mongoClient.getDatabase("concession");
-            MongoCollection<Document> collection = database.getCollection("voitures");
-            Document doc = collection.find().first();
-            if (doc != null) {
-                System.out.println(doc.toJson());
-            } else {
-                System.out.println("No matching documents found.");
-            }
-        }
-    }
-    
-    public void getMarques(){
-        
-        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
-            MongoDatabase database = mongoClient.getDatabase("concession");
-            MongoCollection<Document> collection = database.getCollection("marques");
-            Document doc = collection.find().first();
-            if (doc != null) {
-                System.out.println(doc.toJson());
-            } else {
-                System.out.println("No matching documents found.");
-            }
-        }
-    }
-    
-    public void getEntretiens(){
-        
-        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
-            MongoDatabase database = mongoClient.getDatabase("concession");
-            MongoCollection<Document> collection = database.getCollection("entretiens");
-            Document doc = collection.find().first();
-            if (doc != null) {
-                System.out.println(doc.toJson());
-            } else {
-                System.out.println("No matching documents found.");
-            }
-        }
-    }
+    public abstract void getAll();
+    public abstract void getOne(String id);
+    public abstract void addOne(String id);
+    public abstract void updateOne(String id);
+    public abstract void deleteOne(String id);
 }

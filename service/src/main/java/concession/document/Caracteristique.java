@@ -62,6 +62,4 @@ public class Caracteristique {
     public void setCarburant(String carburant) {
         this.carburant = carburant;
     }
-    
-    
 }

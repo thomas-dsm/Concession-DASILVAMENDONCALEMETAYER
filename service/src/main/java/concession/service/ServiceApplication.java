@@ -1,21 +1,15 @@
 package concession.service;
 
 import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
-import org.bson.Document;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-
-import static com.mongodb.client.model.Filters.eq;
-import concession.mongoclient.MongoClientConcession;
+import concession.mongoclient.MongoClientEntretien;
+import concession.mongoclient.MongoClientMarque;
+import concession.mongoclient.MongoClientVoiture;
 import org.bson.codecs.configuration.CodecProvider;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
@@ -29,10 +23,13 @@ public class ServiceApplication {
         // Replace the placeholder with your MongoDB deployment's connection string
         String uri = "mongodb://localhost:27017";
         
-        MongoClientConcession concession = new MongoClientConcession(uri);
+        MongoClientVoiture voiture = new MongoClientVoiture(uri);
+        //MongoClientMarque marque = new MongoClientMarque(uri);
+        //MongoClientEntretien entretien = new MongoClientEntretien(uri);
         
-        concession.getVoitures();
-        concession.getMarques();
-        concession.getEntretiens();
+        voiture.getAll();
+        voiture.getOne("AA-000-AA");
+        //marque.getAll();
+        //entretien.getAll();
     }
 }
