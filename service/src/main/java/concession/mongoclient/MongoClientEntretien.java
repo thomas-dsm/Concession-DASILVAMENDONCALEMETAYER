@@ -4,10 +4,12 @@
  */
 package concession.mongoclient;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.InsertOneResult;
 import org.bson.Document;
 
 /**
@@ -25,11 +27,14 @@ public class MongoClientEntretien extends MongoClientConcession {
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("entretiens");
-            Document doc = collection.find().first();
-            if (doc != null) {
-                System.out.println(doc.toJson());
+            FindIterable<Document> results = collection.find();
+
+            if (results != null) {
+                for (Document doc : results) {
+                    System.out.println(doc.toJson());
+                }
             } else {
-                System.out.println("No matching documents found.");
+                System.out.println("No matching entretien found.");
             }
         }
     }
@@ -41,7 +46,18 @@ public class MongoClientEntretien extends MongoClientConcession {
 
     @Override
     public String addOne(Document entretien) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
+            MongoDatabase database = mongoClient.getDatabase("concession");
+            MongoCollection<Document> collection = database.getCollection("entretiens");
+            InsertOneResult results = collection.insertOne(entretien);
+            
+            if (results != null) {
+                return "Entretien : " + results.getInsertedId().asObjectId().getValue().toString() +  " was added to collection";
+            } else {
+                return "Cannot update entretien : " + entretien.get("immat");
+            }
+        }
     }
 
     @Override

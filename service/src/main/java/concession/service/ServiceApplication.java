@@ -24,9 +24,11 @@ public class ServiceApplication {
         String uri = "mongodb://localhost:27017";
         
         MongoClientVoiture voitureClient = new MongoClientVoiture(uri);
-        //MongoClientMarque marque = new MongoClientMarque(uri);
-        //MongoClientEntretien entretien = new MongoClientEntretien(uri);
+        MongoClientMarque marqueClient = new MongoClientMarque(uri);
+        MongoClientEntretien entretienClient = new MongoClientEntretien(uri);
         
         Mock.MockVoiture(voitureClient);
+        Mock.MockMarque(marqueClient);
+        Mock.MockEntretien(entretienClient);
     }
 }

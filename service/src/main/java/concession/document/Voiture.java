@@ -4,6 +4,7 @@
  */
 package concession.document;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,13 +14,13 @@ import java.util.List;
 public class Voiture {
     private String marqueId;
     private String immat;
-    private String dateImmat;
+    private Date dateImmat;
     private double prix;
     private List<String> type;
     private Caracteristique caracteristiques;
     private String couleur;
 
-    public Voiture(String marqueId, String immat, String dateImmat, double prix, List<String> type, Caracteristique caracteristiques, String couleur) {
+    public Voiture(String marqueId, String immat, Date dateImmat, double prix, List<String> type, Caracteristique caracteristiques, String couleur) {
         this.marqueId = marqueId;
         this.immat = immat;
         this.dateImmat = dateImmat;
@@ -45,11 +46,11 @@ public class Voiture {
         this.immat = immat;
     }
 
-    public String getDateImmat() {
+    public Date getDateImmat() {
         return dateImmat;
     }
 
-    public void setDateImmat(String dateImmat) {
+    public void setDateImmat(Date dateImmat) {
         this.dateImmat = dateImmat;
     }
 

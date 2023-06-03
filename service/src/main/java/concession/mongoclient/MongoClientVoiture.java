@@ -38,7 +38,7 @@ public class MongoClientVoiture extends MongoClientConcession {
                     System.out.println(doc.toJson());
                 }
             } else {
-                System.out.println("No matching documents found.");
+                System.out.println("No matching voitures found.");
             }
         }
     }
