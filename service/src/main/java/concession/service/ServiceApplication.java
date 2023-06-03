@@ -1,10 +1,10 @@
 package concession.service;
 
 import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
-
 import concession.mongoclient.MongoClientEntretien;
 import concession.mongoclient.MongoClientMarque;
 import concession.mongoclient.MongoClientVoiture;
+import data.Mock;
 import org.bson.codecs.configuration.CodecProvider;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -23,13 +23,10 @@ public class ServiceApplication {
         // Replace the placeholder with your MongoDB deployment's connection string
         String uri = "mongodb://localhost:27017";
         
-        MongoClientVoiture voiture = new MongoClientVoiture(uri);
+        MongoClientVoiture voitureClient = new MongoClientVoiture(uri);
         //MongoClientMarque marque = new MongoClientMarque(uri);
         //MongoClientEntretien entretien = new MongoClientEntretien(uri);
         
-        voiture.getAll();
-        voiture.getOne("AA-000-AA");
-        //marque.getAll();
-        //entretien.getAll();
+        Mock.MockVoiture(voitureClient);
     }
 }

@@ -4,16 +4,7 @@
  */
 package concession.mongoclient;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
-import static com.mongodb.client.model.Filters.lt;
-import com.mongodb.client.model.Projections;
-import com.mongodb.client.model.Sorts;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 
 /**
  *
@@ -35,8 +26,8 @@ public abstract class MongoClientConcession {
     }
     
     public abstract void getAll();
-    public abstract void getOne(String id);
-    public abstract void addOne(String id);
-    public abstract void updateOne(String id);
-    public abstract void deleteOne(String id);
+    public abstract String getOne(String id);
+    public abstract String addOne(Document document);
+    public abstract String updateOne(Document document, Document document2);
+    public abstract String deleteOne(String id);
 }

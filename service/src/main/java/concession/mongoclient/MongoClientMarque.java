@@ -26,6 +26,7 @@ public class MongoClientMarque extends MongoClientConcession {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("marques");
             Document doc = collection.find().first();
+            
             if (doc != null) {
                 System.out.println(doc.toJson());
             } else {
@@ -35,22 +36,22 @@ public class MongoClientMarque extends MongoClientConcession {
     }
 
     @Override
-    public void getOne(String id) {
+    public String getOne(String id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void addOne(String id) {
+    public String addOne(Document marque) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void updateOne(String id) {
+    public String updateOne(Document marque, Document marque2) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void deleteOne(String id) {
+    public String deleteOne(String id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     

@@ -10,9 +10,11 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.InsertOneResult;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import static org.springframework.core.convert.TypeDescriptor.collection;
 
 /**
  *
@@ -32,18 +34,17 @@ public class MongoClientVoiture extends MongoClientConcession {
             FindIterable<Document> results = collection.find();
 
             if (results != null) {
-                for(Document doc : results){
+                for (Document doc : results) {
                     System.out.println(doc.toJson());
                 }
             } else {
-                System.out.println("No matching voiture found.");
+                System.out.println("No matching documents found.");
             }
         }
     }
 
     @Override
-    public void getOne(String immat) {
-
+    public String getOne(String immat) {
         Bson filter = Filters.regex("immat", immat);
         
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
@@ -52,25 +53,60 @@ public class MongoClientVoiture extends MongoClientConcession {
             Document doc = collection.find(filter).first();
             
             if (doc != null) {
-                System.out.println(doc.toJson());
+                return doc.toJson();
             } else {
-                System.out.println("No matching voiture found.");
+                return "No matching voiture found.";
             }
         }
     }
 
     @Override
-    public void addOne(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String addOne(Document voiture) {
+        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
+            MongoDatabase database = mongoClient.getDatabase("concession");
+            MongoCollection<Document> collection = database.getCollection("voitures");
+            InsertOneResult results = collection.insertOne(voiture);
+            
+            if (results != null) {
+                return "Voiture : " + results.getInsertedId().asObjectId().getValue().toString() +  " was added to collection";
+            } else {
+                return "Cannot update voiture : " + voiture.get("immat");
+            }
+        }
     }
 
     @Override
-    public void updateOne(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String updateOne(Document voiture, Document voiture2) {
+        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
+            MongoDatabase database = mongoClient.getDatabase("concession");
+            MongoCollection<Document> collection = database.getCollection("voitures");
+            
+            UpdateResult results = collection.updateOne(voiture, voiture2);
+            
+            if (results.getMatchedCount() == 1) {
+                return "Voiture was modified";
+            } else {
+                return "Cannot add voiture.";
+            }
+        }
     }
 
     @Override
-    public void deleteOne(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String deleteOne(String immat) {
+        
+        Bson filter = Filters.regex("immat", immat);
+        
+        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
+            MongoDatabase database = mongoClient.getDatabase("concession");
+            MongoCollection<Document> collection = database.getCollection("voitures");
+            DeleteResult results = collection.deleteOne(filter);
+
+            if (results.getDeletedCount() == 1) {
+                return "Voiture " + immat + " was deleted successfully";
+                
+            } else {
+                return "No matching voiture found.";
+            }
+        }
     }
 }
