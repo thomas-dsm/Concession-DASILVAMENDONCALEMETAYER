@@ -8,9 +8,9 @@ import concession.document.Caracteristique;
 import concession.document.Entretien;
 import concession.document.Marque;
 import concession.document.Voiture;
-import concession.mongoclient.MongoClientEntretien;
-import concession.mongoclient.MongoClientMarque;
-import concession.mongoclient.MongoClientVoiture;
+import concession.service.EntretienService;
+import concession.service.MarqueService;
+import concession.service.VoitureService;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import org.bson.types.ObjectId;
  * @author tdasilvamendonca
  */
 public class Mock {
-    public static void MockVoiture(MongoClientVoiture voitureClient){
+    public static void MockVoiture(VoitureService voitureClient){
         
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");  
 
@@ -74,7 +74,7 @@ public class Mock {
         System.out.println(voitureClient.deleteOne("TE-000-ST"));
     }
     
-    public static void MockMarque(MongoClientMarque marqueClient){
+    public static void MockMarque(MarqueService marqueClient){
    
         marqueClient.getAll();
         
@@ -105,7 +105,7 @@ public class Mock {
         System.out.println(marqueClient.deleteOne("Vilebrequin"));
     }
 
-    public static void MockEntretien(MongoClientEntretien entretienClient) {
+    public static void MockEntretien(EntretienService entretienClient) {
         
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");  
         
