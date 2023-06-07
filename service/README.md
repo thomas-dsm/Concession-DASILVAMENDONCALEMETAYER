@@ -60,3 +60,35 @@ If you want to learn more about building native executables, please consult http
 Easily start your Reactive RESTful Web Services
 
 [Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+
+## USING API
+
+### VOITURE
+
+* GET `/voiture/getAll`
+Retourne toutes les voitures
+
+* GET `/get/{immat}`
+Retourne la voiture demandé
+
+* POST `/add`
+Ajoute une voiture
+```
+{
+    "marqueId" : "647b689220b05566a410e5b1",
+    "immat": "AA-000-AA",
+    "dateImmat": "2012-03-26T23:20:16.000+00:00",
+    "prix": 40000,
+    "type": [
+        "sportive"
+    ],
+    "caracteristiques": {
+        "puissance": 1000,
+        "poids": 2000,
+        "longueur": 5,
+        "largeur": 3,
+        "carburant": "ethanol"
+    },
+    "couleur": "FFFFFF"
+}
+```
