@@ -9,6 +9,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.core.Response;
 import org.bson.Document;
 
@@ -19,6 +20,7 @@ import java.util.Objects;
  *
  * @author tdasilvamendonca
  */
+@ApplicationScoped
 public class EntretienService extends ConcessionService {
 
     @Override

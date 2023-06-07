@@ -66,7 +66,7 @@ Easily start your Reactive RESTful Web Services
 ### VOITURE
 
 * GET `/voiture/getAll`
- Return 200 with list of voiture json
+ Return 200 with list of voitures json
 
 * GET `/voiture/get/{immat}`
   Return 200 with a voiture json
@@ -121,3 +121,39 @@ example of body :
 
 * DELETE `voiture/get/{immat}`
   Return 204 if voiture is deleted
+
+
+### Marque
+
+* GET `/marque/getAll`
+  Return 200 with list of marques json
+
+* GET `/marque/get/{nom}`
+  Return 200 with a marque json
+
+* POST `/marque/add`
+  Return 201 if marque is created
+
+example of body :
+```
+{
+"nom": "Renauld",
+"anneeCreation": 1970,
+"pays": "FRANCE"
+}
+```
+
+* UPDATE `/marque/getAll`
+  Return 204 if marque is modified
+
+example of body :
+```
+{
+"nom": "Renauld",
+"anneeCreation": 1970,
+"pays": "FRANCE"
+}
+```
+
+* DELETE `marque/get/{nom}`
+  Return 204 if marque is deleted

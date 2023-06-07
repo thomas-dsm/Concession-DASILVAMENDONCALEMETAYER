@@ -13,6 +13,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.core.Response;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -24,6 +25,7 @@ import java.util.List;
  *
  * @author tdasilvamendonca
  */
+@ApplicationScoped
 public class MarqueService extends ConcessionService {
 
     @Override
@@ -77,7 +79,7 @@ public class MarqueService extends ConcessionService {
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("marques");
-            InsertOneResult results = collection.insertOne(marque);
+            collection.insertOne(marque);
 
             return Response.status(Response.Status.CREATED).build();
         }
