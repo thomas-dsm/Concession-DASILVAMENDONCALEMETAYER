@@ -40,7 +40,7 @@ public class Mock {
         docCaracteristiques.append("largeur", caracteristiques.getLargeur());
         docCaracteristiques.append("carburant", caracteristiques.getCarburant());
         
-        List<String> type = new ArrayList();
+        List<String> type = new ArrayList<>();
         type.add("sportive");
         type.add("suv");
         

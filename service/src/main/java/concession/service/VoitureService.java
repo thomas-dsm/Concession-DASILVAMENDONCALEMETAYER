@@ -11,15 +11,14 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
-import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.core.Response;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  *
@@ -29,7 +28,7 @@ import java.util.Objects;
 public class VoitureService extends ConcessionService {
 
     @Override
-    public List<String> getAll() {
+    public Response getAll() {
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("voitures");
@@ -41,56 +40,70 @@ public class VoitureService extends ConcessionService {
                 listVoiture.add(doc.toJson());
             }
 
-            return listVoiture;
+            return Response.ok().entity(listVoiture).build();
         }
     }
 
     @Override
-    public String getOne(String immat) {
+    public Response getOne(String immat) {
         Bson filter = Filters.regex("immat", immat);
         
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("voitures");
             Document doc = collection.find(filter).first();
-            
+
             if (doc != null) {
-                return doc.toJson();
+                return Response.ok().entity(doc.toJson()).build();
             } else {
-                return "No matching voiture found.";
+                return Response.status(Response.Status.NOT_FOUND).build();
             }
         }
     }
-
     @Override
-    public String addOne(Document voiture) {
+    public Document getOneDocument(String immat) {
+
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
+            Bson filter = Filters.regex("immat", immat);
+
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("voitures");
-            InsertOneResult results = collection.insertOne(voiture);
 
-            return "Voiture : " + Objects.requireNonNull(results.getInsertedId()).asObjectId().getValue().toString() + " was added to collection";
+            return collection.find(filter).first();
         }
     }
 
     @Override
-    public String updateOne(Document voiture, Document voiture2) {
+    public Response addOne(Document voiture) {
+        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
+            MongoDatabase database = mongoClient.getDatabase("concession");
+            MongoCollection<Document> collection = database.getCollection("voitures");
+            collection.insertOne(voiture);
+
+            return Response.status(Response.Status.CREATED).build();
+        }
+    }
+
+    @Override
+    public Response updateOne(Document voiture, Document voiture2) {
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("voitures");
             
             UpdateResult results = collection.updateOne(voiture, voiture2);
-            
+
             if (results.getMatchedCount() == 1) {
-                return "Voiture was modified";
+                return Response.status(Response.Status.NO_CONTENT).build();
             } else {
-                return "Cannot add voiture.";
+                return Response.status(Response.Status.NOT_MODIFIED).build();
             }
+        } catch (IllegalArgumentException exception){
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 
     @Override
-    public String deleteOne(String immat) {
+    public Response deleteOne(String immat) {
         
         Bson filter = Filters.regex("immat", immat);
         
@@ -100,10 +113,10 @@ public class VoitureService extends ConcessionService {
             DeleteResult results = collection.deleteOne(filter);
 
             if (results.getDeletedCount() == 1) {
-                return "Voiture " + immat + " was deleted successfully";
-                
+                return Response.status(Response.Status.NO_CONTENT).build();
+
             } else {
-                return "No matching voiture found.";
+                return Response.status(Response.Status.NOT_FOUND).build();
             }
         }
     }

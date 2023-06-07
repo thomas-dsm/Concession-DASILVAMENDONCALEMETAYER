@@ -4,10 +4,9 @@
  */
 package concession.service;
 
+import jakarta.ws.rs.core.Response;
 import org.bson.Document;
 import io.github.cdimascio.dotenv.Dotenv;
-
-import java.util.List;
 
 /**
  *
@@ -29,9 +28,10 @@ public abstract class ConcessionService {
         this.url = url;
     }
     
-    public abstract List<String> getAll();
-    public abstract String getOne(String id);
-    public abstract String addOne(Document document);
-    public abstract String updateOne(Document document, Document document2);
-    public abstract String deleteOne(String id);
+    public abstract Response getAll();
+    public abstract Response getOne(String id);
+    public abstract Document getOneDocument(String id);
+    public abstract Response addOne(Document document);
+    public abstract Response updateOne(Document document, Document document2);
+    public abstract Response deleteOne(String id);
 }

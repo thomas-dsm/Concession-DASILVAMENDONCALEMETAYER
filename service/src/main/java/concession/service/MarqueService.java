@@ -13,11 +13,12 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
+import jakarta.ws.rs.core.Response;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  *
@@ -26,49 +27,64 @@ import java.util.Objects;
 public class MarqueService extends ConcessionService {
 
     @Override
-    public List<String> getAll() {
+    public Response getAll() {
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("marques");
             FindIterable<Document> results = collection.find();
 
+            List<String> listMarque = new ArrayList<>();
+
             for (Document doc : results) {
-                System.out.println(doc.toJson());
+                listMarque.add(doc.toJson());
             }
+
+            return Response.ok().entity(listMarque).build();
         }
-        return null;
     }
 
     @Override
-    public String getOne(String nom) {
+    public Response getOne(String nom) {
         Bson filter = Filters.regex("nom", nom);
         
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("marques");
             Document doc = collection.find(filter).first();
-            
+
             if (doc != null) {
-                return doc.toJson();
+                return Response.ok().entity(doc.toJson()).build();
             } else {
-                return "No matching marques found.";
+                return Response.status(Response.Status.NOT_FOUND).build();
             }
         }
     }
 
     @Override
-    public String addOne(Document marque) {
+    public Document getOneDocument(String nom) {
+        Bson filter = Filters.regex("nom", nom);
+
+        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
+            MongoDatabase database = mongoClient.getDatabase("concession");
+            MongoCollection<Document> collection = database.getCollection("marques");
+
+            return collection.find(filter).first();
+        }
+    }
+
+    @Override
+    public Response addOne(Document marque) {
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("marques");
             InsertOneResult results = collection.insertOne(marque);
 
-            return "Marque : " + Objects.requireNonNull(results.getInsertedId()).asObjectId().getValue().toString() + " was added to collection";
+            return Response.status(Response.Status.CREATED).build();
         }
     }
 
     @Override
-    public String updateOne(Document marque, Document marque2) {
+    public Response updateOne(Document marque, Document marque2) {
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("marques");
@@ -76,15 +92,15 @@ public class MarqueService extends ConcessionService {
             UpdateResult results = collection.updateOne(marque, marque2);
             
             if (results.getMatchedCount() == 1) {
-                return "Marque was modified";
+                return Response.status(Response.Status.NO_CONTENT).build();
             } else {
-                return "Cannot add marque.";
+                return Response.status(Response.Status.NOT_MODIFIED).build();
             }
         }
     }
 
     @Override
-    public String deleteOne(String nom) {
+    public Response deleteOne(String nom) {
         Bson filter = Filters.regex("nom", nom);
         
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
@@ -93,10 +109,10 @@ public class MarqueService extends ConcessionService {
             DeleteResult results = collection.deleteOne(filter);
 
             if (results.getDeletedCount() == 1) {
-                return "Marque " + nom + " was deleted successfully";
+                return Response.status(Response.Status.NO_CONTENT).build();
                 
             } else {
-                return "No matching marque found.";
+                return Response.status(Response.Status.NOT_FOUND).build();
             }
         }    
     }

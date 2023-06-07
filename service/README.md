@@ -66,13 +66,15 @@ Easily start your Reactive RESTful Web Services
 ### VOITURE
 
 * GET `/voiture/getAll`
-Retourne toutes les voitures
+ Return 200 with list of voiture json
 
-* GET `/get/{immat}`
-Retourne la voiture demandé
+* GET `/voiture/get/{immat}`
+  Return 200 with a voiture json
 
-* POST `/add`
-Ajoute une voiture
+* POST `/voiture/add`
+  Return 201 if voiture is created
+
+example of body :
 ```
 {
     "marqueId" : "647b689220b05566a410e5b1",
@@ -92,3 +94,30 @@ Ajoute une voiture
     "couleur": "FFFFFF"
 }
 ```
+
+* UPDATE `/voiture/getAll`
+  Return 204 if voiture is modified
+
+example of body :
+```
+{
+    "marqueId" : "647b689220b05566a410e5b1",
+    "immat": "AA-000-AA",
+    "dateImmat": "2012-03-26T23:20:16.000+00:00",
+    "prix": 40000,
+    "type": [
+        "sportive"
+    ],
+    "caracteristiques": {
+        "puissance": 1000,
+        "poids": 2000,
+        "longueur": 5,
+        "largeur": 3,
+        "carburant": "ethanol"
+    },
+    "couleur": "FFFFFF"
+}
+```
+
+* DELETE `voiture/get/{immat}`
+  Return 204 if voiture is deleted

@@ -9,7 +9,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.InsertOneResult;
+import jakarta.ws.rs.core.Response;
 import org.bson.Document;
 
 import java.util.List;
@@ -22,43 +22,44 @@ import java.util.Objects;
 public class EntretienService extends ConcessionService {
 
     @Override
-    public List<String> getAll() {
+    public Response getAll() {
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("entretiens");
             FindIterable<Document> results = collection.find();
 
-            for (Document doc : results) {
-                System.out.println(doc.toJson());
-            }
+            return Response.ok().entity(results).build();
         }
-        return null;
     }
 
     @Override
-    public String getOne(String id) {
+    public Response getOne(String id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public String addOne(Document entretien) {
+    public Document getOneDocument(String id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Response addOne(Document entretien) {
 
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("entretiens");
-            InsertOneResult results = collection.insertOne(entretien);
 
-            return "Entretien : " + Objects.requireNonNull(results.getInsertedId()).asObjectId().getValue().toString() + " was added to collection";
+            return Response.status(Response.Status.CREATED).build();
         }
     }
 
     @Override
-    public String updateOne(Document entretien, Document entretien2) {
+    public Response updateOne(Document entretien, Document entretien2) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public String deleteOne(String id) {
+    public Response deleteOne(String id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
