@@ -9,12 +9,15 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.core.Response;
 import org.bson.Document;
+import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  *
@@ -63,5 +66,51 @@ public class EntretienService extends ConcessionService {
     @Override
     public Response deleteOne(String id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public Response getAllByVoiture(String immat) {
+
+        VoitureService voitureService = new VoitureService();
+        Document voiture = voitureService.getOneDocument(immat);
+
+        if (voiture == null){
+            return Response.status(404).build();
+        }
+
+        Bson filter = Filters.eq("voiture_id", voiture.getObjectId("_id"));
+
+        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
+            MongoDatabase database = mongoClient.getDatabase("concession");
+            MongoCollection<Document> collection = database.getCollection("entretiens");
+            FindIterable<Document> results = collection.find(filter);
+
+            List<String> listEntretiens = new ArrayList<>();
+
+            for (Document doc : results) {
+                listEntretiens.add(doc.toJson());
+            }
+
+            return Response.ok().entity(listEntretiens).build();
+        }
+    }
+
+    public Response addOneByVoiture(Document entretien, String immat) {
+
+        VoitureService voitureService = new VoitureService();
+        Document voiture = voitureService.getOneDocument(immat);
+
+        if (voiture == null){
+            return Response.status(404).build();
+        }
+
+        entretien.append("voiture_id", voiture.getObjectId("_id"));
+
+        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
+            MongoDatabase database = mongoClient.getDatabase("concession");
+            MongoCollection<Document> collection = database.getCollection("entretiens");
+            collection.insertOne(entretien);
+
+            return Response.status(Response.Status.CREATED).build();
+        }
     }
 }

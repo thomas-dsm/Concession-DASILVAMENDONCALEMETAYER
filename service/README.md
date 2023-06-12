@@ -137,9 +137,9 @@ example of body :
 example of body :
 ```
 {
-"nom": "Renauld",
-"anneeCreation": 1970,
-"pays": "FRANCE"
+  "nom": "Renauld",
+  "anneeCreation": 1970,
+  "pays": "FRANCE"
 }
 ```
 
@@ -149,11 +149,35 @@ example of body :
 example of body :
 ```
 {
-"nom": "Renauld",
-"anneeCreation": 1970,
-"pays": "FRANCE"
+  "nom": "Renauld",
+  "anneeCreation": 1970,
+  "pays": "FRANCE"
 }
 ```
 
 * DELETE `marque/get/{nom}`
   Return 204 if marque is deleted
+
+### Entretien
+
+* GET `/entretien/get`
+  Return 200 with list of entretien json
+
+example of body :
+```
+{
+  "immat": "AA-000-AA"
+}
+```
+
+* GET `/entretien/add/{immat}`
+  Return 201 if entretien is created
+
+example of body :
+```
+{
+  "date": "2023-06-12T14:50:16.000+00:00",
+  "description": "vidange", 
+  "garage": "Garage de Toto"
+}
+```
