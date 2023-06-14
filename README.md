@@ -2,16 +2,29 @@
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
+Realised by Thomas DA SILVA MENDONCA and Paul LEMETAYER
 ## RUNNING PROJECT
+
+If needed to modify MONGO var in .env file with your mongodb url ! (default : `mongodb://localhost:27017)
+
+You can import your data from `/docs/collections/*`into your mongodb with compass
 
 ### RUNNING DEV
 ```shell script
 ./mvnw compile quarkus:dev
 ```
+(for MacOS)
+```shell script
+mvn compile quarkus:dev
+```
 
 ### PACKAGE & RUNNING PROJECT
 ```shell script
 ./mvnw package
+```
+(for MacOS)
+```shell script
+mvn package
 ```
 
 ## USING API

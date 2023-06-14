@@ -1,0 +1,97 @@
+[{
+  "_id": {
+    "$oid": "6489a900f207a017b06f60a2"
+  },
+  "marque_id": {
+    "$oid": "6487087d23e131b8da0bd0d4"
+  },
+  "immat": "AA-000-AA",
+  "date_immat": {
+    "$date": "2023-06-14T00:00:00.000Z"
+  },
+  "prix": 40000,
+  "type": [
+    "sportive"
+  ],
+  "caracteristiques": {
+    "puissance": 1000,
+    "poids": 2000,
+    "longeur": 5,
+    "largeur": 3,
+    "carburant": "E-98"
+  },
+  "couleur": "FFFFFF"
+},
+{
+  "_id": {
+    "$oid": "6489a939f207a017b06f60a4"
+  },
+  "marque_id": {
+    "$oid": "6487087d23e131b8da0bd0d3"
+  },
+  "immat": "BB-000-BB",
+  "date_immat": {
+    "$date": "2023-06-14T00:00:00.000Z"
+  },
+  "prix": 20000,
+  "type": [
+    "citadine"
+  ],
+  "caracteristiques": {
+    "puissance": 300,
+    "poids": 1000,
+    "longeur": 3,
+    "largeur": 2,
+    "carburant": "electrique"
+  },
+  "couleur": "FFFFFF"
+},
+{
+  "_id": {
+    "$oid": "6489aa08f207a017b06f60a8"
+  },
+  "marque_id": {
+    "$oid": "6487087d23e131b8da0bd0d5"
+  },
+  "immat": "CC-000-CC",
+  "date_immat": {
+    "$date": "2023-06-14T00:00:00.000Z"
+  },
+  "prix": 40000,
+  "type": [
+    "beline"
+  ],
+  "caracteristiques": {
+    "puissance": 600,
+    "poids": 1000,
+    "longeur": 3,
+    "largeur": 2,
+    "carburant": "E-95"
+  },
+  "couleur": "000000"
+},
+{
+  "_id": {
+    "$oid": "6489aa42f207a017b06f60aa"
+  },
+  "marque_id": {
+    "$oid": "6487087d23e131b8da0bd0d6"
+  },
+  "immat": "DD-000-DD",
+  "date_immat": {
+    "$date": "2023-06-14T00:00:00.000Z"
+  },
+  "prix": 40000,
+  "type": [
+    "sportive",
+    "suv"
+  ],
+  "caracteristiques": {
+    "puissance": 600,
+    "poids": 1000,
+    "longeur": 4,
+    "largeur": 3,
+    "carburant": "E-95"
+  },
+  "couleur": "000000"
+}]
