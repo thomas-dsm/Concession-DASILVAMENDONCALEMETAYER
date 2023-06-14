@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package concession.service;
+package concession.repository;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
@@ -14,7 +14,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.core.Response;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
  * @author tdasilvamendonca
  */
 @ApplicationScoped
-public class EntretienService extends ConcessionService {
+public class EntretienRepository extends ConcessionRepository {
 
     @Override
     public Response getAll() {
@@ -70,7 +69,7 @@ public class EntretienService extends ConcessionService {
 
     public Response getAllByVoiture(String immat) {
 
-        VoitureService voitureService = new VoitureService();
+        VoitureRepository voitureService = new VoitureRepository();
         Document voiture = voitureService.getOneDocument(immat);
 
         if (voiture == null){
@@ -96,7 +95,7 @@ public class EntretienService extends ConcessionService {
 
     public Response addOneByVoiture(Document entretien, String immat) {
 
-        VoitureService voitureService = new VoitureService();
+        VoitureRepository voitureService = new VoitureRepository();
         Document voiture = voitureService.getOneDocument(immat);
 
         if (voiture == null){

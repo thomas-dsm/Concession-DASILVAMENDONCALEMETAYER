@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package concession.service;
+package concession.repository;
 
 import jakarta.ws.rs.core.Response;
 import org.bson.Document;
@@ -12,10 +12,10 @@ import io.github.cdimascio.dotenv.Dotenv;
  *
  * @author tdasilvamendonca
  */
-public abstract class ConcessionService {
+public abstract class ConcessionRepository {
     private String url;
 
-    public ConcessionService() {
+    public ConcessionRepository() {
         Dotenv dotenv = Dotenv.load();
         this.url = dotenv.get("MONGO");
     }

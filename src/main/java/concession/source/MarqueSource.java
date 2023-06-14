@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package concession.service;
+package concession.repository;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
@@ -25,32 +25,32 @@ import java.util.List;
  * @author tdasilvamendonca
  */
 @ApplicationScoped
-public class VoitureService extends ConcessionService {
+public class MarqueRepository extends ConcessionRepository {
 
     @Override
     public Response getAll() {
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
-            MongoCollection<Document> collection = database.getCollection("voitures");
+            MongoCollection<Document> collection = database.getCollection("marques");
             FindIterable<Document> results = collection.find();
 
-            List<String> listVoiture = new ArrayList<>();
+            List<String> listMarque = new ArrayList<>();
 
             for (Document doc : results) {
-                listVoiture.add(doc.toJson());
+                listMarque.add(doc.toJson());
             }
 
-            return Response.ok().entity(listVoiture).build();
+            return Response.ok().entity(listMarque).build();
         }
     }
 
     @Override
-    public Response getOne(String immat) {
-        Bson filter = Filters.regex("immat", immat);
+    public Response getOne(String nom) {
+        Bson filter = Filters.regex("nom", nom);
         
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
-            MongoCollection<Document> collection = database.getCollection("voitures");
+            MongoCollection<Document> collection = database.getCollection("marques");
             Document doc = collection.find(filter).first();
 
             if (doc != null) {
@@ -60,64 +60,61 @@ public class VoitureService extends ConcessionService {
             }
         }
     }
+
     @Override
-    public Document getOneDocument(String immat) {
+    public Document getOneDocument(String nom) {
+        Bson filter = Filters.regex("nom", nom);
 
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
-            Bson filter = Filters.regex("immat", immat);
-
             MongoDatabase database = mongoClient.getDatabase("concession");
-            MongoCollection<Document> collection = database.getCollection("voitures");
+            MongoCollection<Document> collection = database.getCollection("marques");
 
             return collection.find(filter).first();
         }
     }
 
     @Override
-    public Response addOne(Document voiture) {
+    public Response addOne(Document marque) {
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
-            MongoCollection<Document> collection = database.getCollection("voitures");
-            collection.insertOne(voiture);
+            MongoCollection<Document> collection = database.getCollection("marques");
+            collection.insertOne(marque);
 
             return Response.status(Response.Status.CREATED).build();
         }
     }
 
     @Override
-    public Response updateOne(Document voiture, Document voiture2) {
+    public Response updateOne(Document marque, Document marque2) {
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
-            MongoCollection<Document> collection = database.getCollection("voitures");
+            MongoCollection<Document> collection = database.getCollection("marques");
             
-            UpdateResult results = collection.updateOne(voiture, voiture2);
-
+            UpdateResult results = collection.updateOne(marque, marque2);
+            
             if (results.getMatchedCount() == 1) {
                 return Response.status(Response.Status.NO_CONTENT).build();
             } else {
                 return Response.status(Response.Status.NOT_MODIFIED).build();
             }
-        } catch (IllegalArgumentException exception){
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 
     @Override
-    public Response deleteOne(String immat) {
-        
-        Bson filter = Filters.regex("immat", immat);
+    public Response deleteOne(String nom) {
+        Bson filter = Filters.regex("nom", nom);
         
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
-            MongoCollection<Document> collection = database.getCollection("voitures");
+            MongoCollection<Document> collection = database.getCollection("marques");
             DeleteResult results = collection.deleteOne(filter);
 
             if (results.getDeletedCount() == 1) {
                 return Response.status(Response.Status.NO_CONTENT).build();
-
+                
             } else {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
-        }
+        }    
     }
 }
