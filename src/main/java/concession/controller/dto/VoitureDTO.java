@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package concession.source.model;
+package concession.controller.dto;
 
 import java.util.Date;
 import java.util.List;
@@ -11,16 +11,16 @@ import java.util.List;
  *
  * @author tdasilvamendonca
  */
-public class Voiture {
+public class VoitureDTO {
     private String marqueId;
     private String immat;
     private Date dateImmat;
     private double prix;
     private List<String> type;
-    private Caracteristique caracteristiques;
+    private CaracteristiqueDTO caracteristiques;
     private String couleur;
 
-    public Voiture(String marqueId, String immat, Date dateImmat, double prix, List<String> type, Caracteristique caracteristiques, String couleur) {
+    public VoitureDTO(String marqueId, String immat, Date dateImmat, double prix, List<String> type, CaracteristiqueDTO caracteristiques, String couleur) {
         this.marqueId = marqueId;
         this.immat = immat;
         this.dateImmat = dateImmat;
@@ -70,11 +70,11 @@ public class Voiture {
         this.type = type;
     }
 
-    public Caracteristique getCaracteristiques() {
+    public CaracteristiqueDTO getCaracteristiques() {
         return caracteristiques;
     }
 
-    public void setCaracteristiques(Caracteristique caracteristiques) {
+    public void setCaracteristiques(CaracteristiqueDTO caracteristiques) {
         this.caracteristiques = caracteristiques;
     }
 

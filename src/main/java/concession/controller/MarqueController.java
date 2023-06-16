@@ -1,54 +1,69 @@
-package concession.resource;
+package concession.controller;
 
-import concession.document.Marque;
-import concession.service.MarqueService;
+import concession.controller.dto.MarqueDTO;
+import concession.source.MarqueSource;
+import concession.source.model.Marque;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.bson.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Path("/marque")
-public class MarqueResource {
+public class MarqueController {
 
     @Inject
-    MarqueService service;
+    MarqueSource source;
 
     @GET
     @Path("/getAll")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response getAll() {
-        return service.getAll();
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<MarqueDTO> getAll() {
+
+        List<MarqueDTO> marqueDTOList = new ArrayList<>();
+        List<Marque> marqueList = source.getAll();
+
+        for (Marque marque : marqueList)
+        {
+            marqueDTOList.add(convertMarque(marque));
+        }
+
+        return marqueDTOList;
     }
 
     @GET
     @Path("/get/{nom}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response getOne(String nom) {
-        return service.getOne(nom);
+    @Produces(MediaType.APPLICATION_JSON)
+    public MarqueDTO getOne(String nom) {
+
+        return convertMarque(source.getOne(nom));
     }
 
     @POST
     @Path("/add")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addOne(Marque marque) {
+    public Response addOne(MarqueDTO marque) {
+
         Document marqueDocument = new Document();
 
         marqueDocument.append("nom", marque.getNom());
         marqueDocument.append("anneeCreation", marque.getAnneeCreation());
         marqueDocument.append("pays", marque.getPays());
 
-        return service.addOne(marqueDocument);
+        return source.addOne(marqueDocument);
     }
 
     @PUT
     @Path("/update/{nom}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateOne(Marque marque, String nom) {
+    public Response updateOne(MarqueDTO marque, String nom) {
 
-        Document oldMarque = service.getOneDocument(nom);
+        Document oldMarque = source.getOneDocument(nom);
 
         Document marqueDocument = new Document();
 
@@ -59,13 +74,22 @@ public class MarqueResource {
         Document documentUpdate = new Document();
         documentUpdate.put("$set", marqueDocument);
 
-        return service.updateOne(oldMarque, documentUpdate);
+        return source.updateOne(oldMarque, documentUpdate);
     }
 
     @DELETE
     @Path("/delete/{nom}")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteOne(String nom) {
-        return service.deleteOne(nom);
+        return source.deleteOne(nom);
+    }
+
+    private MarqueDTO convertMarque(Marque marque)
+    {
+        return new MarqueDTO(
+                marque.getNom(),
+                marque.getAnneeCreation(),
+                marque.getPays()
+        );
     }
 }

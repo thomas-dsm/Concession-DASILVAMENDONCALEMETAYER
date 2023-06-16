@@ -36,6 +36,7 @@ public class VoitureRepository extends ConcessionRepository {
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("voitures");
+
             return collection.find(filter).first();
         }
     }
@@ -67,6 +68,7 @@ public class VoitureRepository extends ConcessionRepository {
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("voitures");
+
             return collection.deleteOne(filter);
         }
     }

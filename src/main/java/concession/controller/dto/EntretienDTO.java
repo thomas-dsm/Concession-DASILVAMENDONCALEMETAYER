@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package concession.source.model;
+package concession.controller.dto;
 
 import java.util.Date;
 
@@ -10,13 +10,13 @@ import java.util.Date;
  *
  * @author tdasilvamendonca
  */
-public class Entretien {
+public class EntretienDTO {
     private String voitureId;
     private Date date;
     private String description;
     private String garage;
 
-    public Entretien(String voitureId, Date date, String description, String garage) {
+    public EntretienDTO(String voitureId, Date date, String description, String garage) {
         this.voitureId = voitureId;
         this.date = date;
         this.description = description;

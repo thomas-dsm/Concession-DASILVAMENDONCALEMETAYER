@@ -2,20 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package concession.source.model;
+package concession.controller.dto;
 
 /**
  *
  * @author tdasilvamendonca
  */
-public class Caracteristique {
+public class CaracteristiqueDTO {
     private int puissance;
     private int poids;
     private int longueur;
     private int largeur;
     private String carburant;
 
-    public Caracteristique(int puissance, int poids, int longueur, int largeur, String carburant) {
+    public CaracteristiqueDTO(int puissance, int poids, int longueur, int largeur, String carburant) {
         this.puissance = puissance;
         this.poids = poids;
         this.longueur = longueur;

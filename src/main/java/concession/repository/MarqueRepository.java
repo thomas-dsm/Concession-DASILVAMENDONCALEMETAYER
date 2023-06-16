@@ -13,8 +13,10 @@ import java.util.List;
 
 public class MarqueRepository extends ConcessionRepository {
     @Override
-    public List<Document> getAll() {
-        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
+    public List<Document> getAll()
+    {
+        try (MongoClient mongoClient = MongoClients.create(getUrl()))
+        {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("marques");
             FindIterable<Document> results = collection.find();
@@ -30,11 +32,12 @@ public class MarqueRepository extends ConcessionRepository {
     }
 
     @Override
-    public Document getOne(String nom) {
-
+    public Document getOne(String nom)
+    {
         Bson filter = Filters.regex("nom", nom);
 
-        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
+        try (MongoClient mongoClient = MongoClients.create(getUrl()))
+        {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("marques");
 
@@ -43,8 +46,10 @@ public class MarqueRepository extends ConcessionRepository {
     }
 
     @Override
-    public InsertOneResult addOne(Document marque) {
-        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
+    public InsertOneResult addOne(Document marque)
+    {
+        try (MongoClient mongoClient = MongoClients.create(getUrl()))
+        {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("marques");
 
@@ -53,9 +58,10 @@ public class MarqueRepository extends ConcessionRepository {
     }
 
     @Override
-    public UpdateResult updateOne(Document marque, Document marque2) {
-
-        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
+    public UpdateResult updateOne(Document marque, Document marque2)
+    {
+        try (MongoClient mongoClient = MongoClients.create(getUrl()))
+        {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("marques");
 
@@ -64,8 +70,8 @@ public class MarqueRepository extends ConcessionRepository {
     }
 
     @Override
-    public DeleteResult deleteOne(String nom) {
-
+    public DeleteResult deleteOne(String nom)
+    {
         Bson filter = Filters.regex("nom", nom);
 
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {

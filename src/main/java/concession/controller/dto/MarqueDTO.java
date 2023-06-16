@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package concession.source.model;
+package concession.controller.dto;
 
 /**
  *
  * @author tdasilvamendonca
  */
-public class Marque {
+public class MarqueDTO {
     private String nom;
     private int anneeCreation;
     private String pays;
 
-    public Marque(String nom, int anneeCreation, String pays) {
+    public MarqueDTO(String nom, int anneeCreation, String pays) {
         this.nom = nom;
         this.anneeCreation = anneeCreation;
         this.pays = pays;

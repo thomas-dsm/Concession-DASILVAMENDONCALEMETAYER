@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package concession.repository;
+package concession.source;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
@@ -10,6 +10,9 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import concession.repository.EntretienRepository;
+import concession.source.model.Entretien;
+import concession.source.model.Voiture;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.core.Response;
 import org.bson.Document;
@@ -23,93 +26,48 @@ import java.util.List;
  * @author tdasilvamendonca
  */
 @ApplicationScoped
-public class EntretienRepository extends ConcessionRepository {
+public class EntretienSource {
 
-    @Override
-    public Response getAll() {
-        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
-            MongoDatabase database = mongoClient.getDatabase("concession");
-            MongoCollection<Document> collection = database.getCollection("entretiens");
-            FindIterable<Document> results = collection.find();
+    EntretienRepository repository = new EntretienRepository();
 
-            return Response.ok().entity(results).build();
-        }
-    }
+    public List<Entretien> getAll()
+    {
+        List<Entretien> listEntretien = new ArrayList<>();
+        List<Document> listDocEntretien = repository.getAll();
 
-    @Override
-    public Response getOne(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        for (Document docEntretien : listDocEntretien) {
 
-    @Override
-    public Document getOneDocument(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Response addOne(Document entretien) {
-
-        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
-            MongoDatabase database = mongoClient.getDatabase("concession");
-            MongoCollection<Document> collection = database.getCollection("entretiens");
-
-            return Response.status(Response.Status.CREATED).build();
-        }
-    }
-
-    @Override
-    public Response updateOne(Document entretien, Document entretien2) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Response deleteOne(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public Response getAllByVoiture(String immat) {
-
-        VoitureRepository voitureService = new VoitureRepository();
-        Document voiture = voitureService.getOneDocument(immat);
-
-        if (voiture == null){
-            return Response.status(404).build();
+            listEntretien.add(convertToEntretien(docEntretien));
         }
 
-        Bson filter = Filters.eq("voiture_id", voiture.getObjectId("_id"));
-
-        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
-            MongoDatabase database = mongoClient.getDatabase("concession");
-            MongoCollection<Document> collection = database.getCollection("entretiens");
-            FindIterable<Document> results = collection.find(filter);
-
-            List<String> listEntretiens = new ArrayList<>();
-
-            for (Document doc : results) {
-                listEntretiens.add(doc.toJson());
-            }
-
-            return Response.ok().entity(listEntretiens).build();
-        }
+        return listEntretien;
     }
 
-    public Response addOneByVoiture(Document entretien, String immat) {
+    public List<Entretien> getAllByVoiture(String immat) {
 
-        VoitureRepository voitureService = new VoitureRepository();
-        Document voiture = voitureService.getOneDocument(immat);
+        List<Entretien> listEntretien = new ArrayList<>();
+        List<Document> listDocEntretien = repository.getAllByVoitureImmat(immat);
 
-        if (voiture == null){
-            return Response.status(404).build();
+        for (Document docEntretien : listDocEntretien)
+        {
+            listEntretien.add(convertToEntretien(docEntretien));
         }
 
-        entretien.append("voiture_id", voiture.getObjectId("_id"));
+        return listEntretien;
+    }
 
-        try (MongoClient mongoClient = MongoClients.create(getUrl())) {
-            MongoDatabase database = mongoClient.getDatabase("concession");
-            MongoCollection<Document> collection = database.getCollection("entretiens");
-            collection.insertOne(entretien);
+    public Response addOneByVoiture(Document entretien, String immat)
+    {
+        return null;
+    }
 
-            return Response.status(Response.Status.CREATED).build();
-        }
+    private Entretien convertToEntretien(Document docEntretien)
+    {
+        return new Entretien(
+                docEntretien.getObjectId("voiture_id").toString(),
+                docEntretien.getDate("date"),
+                docEntretien.getString("description"),
+                docEntretien.getString("garage")
+        );
     }
 }
