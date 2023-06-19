@@ -7,7 +7,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +20,14 @@ public class MarqueController {
     @GET
     @Path("/getAll")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<MarqueDTO> getAll() {
-
+    public List<MarqueDTO> getAll()
+    {
         List<MarqueDTO> marqueDTOList = new ArrayList<>();
         List<Marque> marqueList = source.getAll();
 
         for (Marque marque : marqueList)
         {
-            marqueDTOList.add(convertMarque(marque));
+            marqueDTOList.add(convertToMarqueDTO(marque));
         }
 
         return marqueDTOList;
@@ -37,59 +36,71 @@ public class MarqueController {
     @GET
     @Path("/get/{nom}")
     @Produces(MediaType.APPLICATION_JSON)
-    public MarqueDTO getOne(String nom) {
-
-        return convertMarque(source.getOne(nom));
+    public MarqueDTO getOne(String nom)
+    {
+        return convertToMarqueDTO(source.getOne(nom));
     }
 
     @POST
     @Path("/add")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addOne(MarqueDTO marque) {
+    public Response addOne(MarqueDTO marqueDTO)
+    {
+        Marque marque = convertToMarque(marqueDTO);
 
-        Document marqueDocument = new Document();
+        if (source.addOne(marque)){
+            return Response.status(201).build();
+        }
 
-        marqueDocument.append("nom", marque.getNom());
-        marqueDocument.append("anneeCreation", marque.getAnneeCreation());
-        marqueDocument.append("pays", marque.getPays());
-
-        return source.addOne(marqueDocument);
+        return Response.status(409).build();
     }
 
     @PUT
     @Path("/update/{nom}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateOne(MarqueDTO marque, String nom) {
+    public Response updateOne(MarqueDTO marqueDTO, String nom)
+    {
+        Marque marque = convertToMarque(marqueDTO);
+        Marque oldMarque = source.getOne(nom);
 
-        Document oldMarque = source.getOneDocument(nom);
+        if (source.updateOne(marque, oldMarque))
+        {
+            return Response.status(204).build();
+        }
 
-        Document marqueDocument = new Document();
-
-        marqueDocument.append("nom", marque.getNom());
-        marqueDocument.append("anneeCreation", marque.getAnneeCreation());
-        marqueDocument.append("pays", marque.getPays());
-
-        Document documentUpdate = new Document();
-        documentUpdate.put("$set", marqueDocument);
-
-        return source.updateOne(oldMarque, documentUpdate);
+        return Response.status(409).build();
     }
 
     @DELETE
     @Path("/delete/{nom}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteOne(String nom) {
-        return source.deleteOne(nom);
+    public Response deleteOne(String nom)
+    {
+        if (source.deleteOne(nom))
+        {
+            return Response.status(204).build();
+        }
+
+        return Response.status(409).build();
     }
 
-    private MarqueDTO convertMarque(Marque marque)
+    private MarqueDTO convertToMarqueDTO(Marque marque)
     {
         return new MarqueDTO(
                 marque.getNom(),
                 marque.getAnneeCreation(),
                 marque.getPays()
+        );
+    }
+
+    private Marque convertToMarque(MarqueDTO marqueDTO)
+    {
+        return new Marque(
+                marqueDTO.getNom(),
+                marqueDTO.getAnneeCreation(),
+                marqueDTO.getPays()
         );
     }
 }

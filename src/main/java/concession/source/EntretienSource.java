@@ -4,19 +4,11 @@
  */
 package concession.source;
 
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.InsertOneResult;
 import concession.repository.EntretienRepository;
 import concession.source.model.Entretien;
-import concession.source.model.Voiture;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.ws.rs.core.Response;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +48,11 @@ public class EntretienSource {
         return listEntretien;
     }
 
-    public Response addOneByVoiture(Document entretien, String immat)
+    public boolean addOneByVoiture(Entretien entretien, String immat)
     {
-        return null;
+        InsertOneResult result = repository.addOneByVoiture(convertToDocument(entretien), immat);
+
+        return result.wasAcknowledged();
     }
 
     private Entretien convertToEntretien(Document docEntretien)
@@ -69,5 +63,16 @@ public class EntretienSource {
                 docEntretien.getString("description"),
                 docEntretien.getString("garage")
         );
+    }
+
+    private Document convertToDocument(Entretien entretien)
+    {
+        Document entretienDocument = new Document();
+
+        entretienDocument.append("date", entretien.getDate());
+        entretienDocument.append("description", entretien.getDescription());
+        entretienDocument.append("garage", entretien.getGarage());
+
+        return entretienDocument;
     }
 }

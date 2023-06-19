@@ -4,10 +4,12 @@
  */
 package concession.source;
 
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.InsertOneResult;
+import com.mongodb.client.result.UpdateResult;
 import concession.repository.MarqueRepository;
 import concession.source.model.Marque;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.ws.rs.core.Response;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -40,32 +42,50 @@ public class MarqueSource {
         return convertToMarque(repository.getOne(nom));
     }
 
+    public boolean addOne(Marque marque)
+    {
+        InsertOneResult result = repository.addOne(convertToDocument(marque));
 
-    public Document getOneDocument(String nom) {
-        return null;
+        return result.wasAcknowledged();
     }
 
+    public boolean updateOne(Marque marque, Marque oldMarque)
+    {
+        Document documentUpdate = new Document();
+        documentUpdate.put("$set", convertToDocument(oldMarque));
 
-    public Response addOne(Document marque) {
-        return null;
+        UpdateResult result = repository.updateOne(
+                convertToDocument(marque),
+                documentUpdate
+        );
+
+        return result.wasAcknowledged();
     }
 
+    public boolean deleteOne(String nom)
+    {
+        DeleteResult result = repository.deleteOne(nom);
 
-    public Response updateOne(Document marque, Document marque2) {
-        return null;
-    }
-
-
-    public Response deleteOne(String nom) {
-        return null;
+        return result.wasAcknowledged();
     }
 
     private Marque convertToMarque(Document docMarque)
     {
         return new Marque(
                 docMarque.getString("nom"),
-                docMarque.getInteger("annee_creation"),
+                docMarque.getInteger("anneeCreation"),
                 docMarque.getString("pays")
         );
+    }
+
+    private Document convertToDocument(Marque marque)
+    {
+        Document marqueDocument = new Document();
+
+        marqueDocument.append("nom", marque.getNom());
+        marqueDocument.append("anneeCreation", marque.getAnneeCreation());
+        marqueDocument.append("pays", marque.getPays());
+
+        return marqueDocument;
     }
 }

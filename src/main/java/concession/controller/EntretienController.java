@@ -11,7 +11,6 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class EntretienController {
 
         for (Entretien entretien : source.getAllByVoiture(voiture.getImmat()))
         {
-            entretienDTOList.add(convertEntretien(entretien));
+            entretienDTOList.add(convertToEntretienDTO(entretien));
         }
 
         return entretienDTOList;
@@ -40,24 +39,33 @@ public class EntretienController {
     @POST
     @Path("/add/{immat}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addOneByVoiture(EntretienDTO entretien, String immat)
+    public Response addOneByVoiture(EntretienDTO entretienDTO, String immat)
     {
-        Document entretienDocument = new Document();
+        if (source.addOneByVoiture(convertToEntretien(entretienDTO), immat))
+        {
+            return Response.status(204).build();
+        }
 
-        entretienDocument.append("date", entretien.getDate());
-        entretienDocument.append("description", entretien.getDescription());
-        entretienDocument.append("garage", entretien.getGarage());
-
-        return source.addOneByVoiture(entretienDocument, immat);
+        return Response.status(409).build();
     }
 
-    private EntretienDTO convertEntretien(Entretien entretien)
+    private EntretienDTO convertToEntretienDTO(Entretien entretien)
     {
         return new EntretienDTO(
                 entretien.getVoitureId(),
                 entretien.getDate(),
                 entretien.getDescription(),
                 entretien.getGarage()
+        );
+    }
+
+    private Entretien convertToEntretien(EntretienDTO entretienDTO)
+    {
+        return new Entretien(
+                entretienDTO.getVoitureId(),
+                entretienDTO.getDate(),
+                entretienDTO.getDescription(),
+                entretienDTO.getGarage()
         );
     }
 }
