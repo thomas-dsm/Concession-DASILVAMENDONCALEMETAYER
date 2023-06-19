@@ -11,6 +11,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
 import concession.repository.VoitureRepository;
 import concession.source.model.Caracteristique;
@@ -19,6 +20,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.core.Response;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 import javax.print.Doc;
 import java.util.ArrayList;
@@ -50,17 +52,31 @@ public class VoitureSource {
         return convertToVoiture(repository.getOne(immat));
     }
 
-    public Response addOne(Document voiture) {
-        return null;
+    public boolean addOne(Voiture voiture)
+    {
+        InsertOneResult result = repository.addOne(convertToDocument(voiture));
+
+        return result.wasAcknowledged();
     }
 
-    public Response updateOne(Document voiture, Document voiture2) {
-        return null;
+    public boolean updateOne(Voiture voiture, Voiture oldVoiture)
+    {
+        Document documentUpdate = new Document();
+        documentUpdate.put("$set", convertToDocument(oldVoiture));
+
+        UpdateResult result = repository.updateOne(
+                convertToDocument(voiture),
+                documentUpdate
+        );
+
+        return result.wasAcknowledged();
     }
 
-    public Response deleteOne(String immat) {
+    public boolean deleteOne(String immat)
+    {
+        DeleteResult result = repository.deleteOne(immat);
 
-        return null;
+        return result.wasAcknowledged();
     }
 
     private Voiture convertToVoiture(Document docVoiture){
@@ -74,6 +90,34 @@ public class VoitureSource {
                 convertToCaracteristique(docVoiture.get("caracteristiques", Document.class)),
                 docVoiture.getString("couleur")
         );
+    }
+
+    private Document convertToDocument(Voiture voiture)
+    {
+        Document voitureDocument = new Document();
+
+        voitureDocument.append("marque_id", new ObjectId(voiture.getMarqueId()));
+        voitureDocument.append("immat", voiture.getImmat());
+        voitureDocument.append("date_immat", voiture.getDateImmat());
+        voitureDocument.append("prix", voiture.getPrix());
+        voitureDocument.append("type", voiture.getType());
+        voitureDocument.append("caracteristiques", convertToDocument(voiture.getCaracteristiques()));
+        voitureDocument.append("couleur", voiture.getCouleur());
+
+        return voitureDocument;
+    }
+
+    private Document convertToDocument(Caracteristique caracteristique)
+    {
+        Document caracteristiqueDocument = new Document();
+
+        caracteristiqueDocument.append("puissance", caracteristique.getPuissance());
+        caracteristiqueDocument.append("poids", caracteristique.getPoids());
+        caracteristiqueDocument.append("longeur", caracteristique.getLongueur());
+        caracteristiqueDocument.append("largeur", caracteristique.getLargeur());
+        caracteristiqueDocument.append("carburant", caracteristique.getCarburant());
+
+        return caracteristiqueDocument;
     }
 
     private Caracteristique convertToCaracteristique(Document docCaracteristique){

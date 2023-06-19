@@ -46,18 +46,19 @@ public class VoitureRepository extends ConcessionRepository {
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("voitures");
+
             return collection.insertOne(voiture);
         }
     }
 
     @Override
-    public UpdateResult updateOne(Document voiture, Document voiture2) {
+    public UpdateResult updateOne(Document voiture, Document oldVoiture) {
 
         try (MongoClient mongoClient = MongoClients.create(getUrl())) {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("voitures");
 
-            return collection.updateOne(voiture, voiture2);
+            return collection.updateOne(voiture, oldVoiture);
         }
     }
 
