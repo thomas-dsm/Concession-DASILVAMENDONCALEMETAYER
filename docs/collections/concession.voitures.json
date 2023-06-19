@@ -16,7 +16,7 @@
   "caracteristiques": {
     "puissance": 1000,
     "poids": 2000,
-    "longeur": 5,
+    "longueur": 5,
     "largeur": 3,
     "carburant": "E-98"
   },
@@ -40,7 +40,7 @@
   "caracteristiques": {
     "puissance": 300,
     "poids": 1000,
-    "longeur": 3,
+    "longueur": 3,
     "largeur": 2,
     "carburant": "electrique"
   },
@@ -64,7 +64,7 @@
   "caracteristiques": {
     "puissance": 600,
     "poids": 1000,
-    "longeur": 3,
+    "longueur": 3,
     "largeur": 2,
     "carburant": "E-95"
   },
@@ -89,7 +89,7 @@
   "caracteristiques": {
     "puissance": 600,
     "poids": 1000,
-    "longeur": 4,
+    "longueur": 4,
     "largeur": 3,
     "carburant": "E-95"
   },
