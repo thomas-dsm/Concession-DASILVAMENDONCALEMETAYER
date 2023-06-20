@@ -43,50 +43,52 @@ mvn package
 example of body :
 ```
 {
-    "marqueId" : "647b689220b05566a410e5b1",
-    "immat": "AA-000-AA",
-    "dateImmat": "2012-03-26T23:20:16.000+00:00",
+    "marqueId" : "6487087d23e131b8da0bd0d6",
+    "immat": "TE-000-ST",
+    "dateImmat": "2023-06-14T00:00:00.000+00:00",
     "prix": 40000,
     "type": [
-        "sportive"
+        "sportive",
+        "suv"
     ],
     "caracteristiques": {
-        "puissance": 1000,
-        "poids": 2000,
-        "longueur": 5,
+        "puissance": 600,
+        "poids": 1000,
+        "longueur": 4,
         "largeur": 3,
-        "carburant": "ethanol"
+        "carburant": "E-95"
     },
-    "couleur": "FFFFFF"
+    "couleur": "000000"
 }
 ```
 
-* UPDATE `/voiture/getAll`
+* UPDATE `/voiture/update/{immat}`
   Return 204 if voiture is modified
 
 example of body :
 ```
 {
-    "marqueId" : "647b689220b05566a410e5b1",
-    "immat": "AA-000-AA",
-    "dateImmat": "2012-03-26T23:20:16.000+00:00",
-    "prix": 40000,
+    "marqueId": "6487087d23e131b8da0bd0d4",
+    "immat": "TE-111-ST",
+    "dateImmat": "2023-06-14T00:00:00.000+00:00",
+    "prix": 34312.43,
     "type": [
-        "sportive"
+        "sportive",
+        "pickup"
     ],
     "caracteristiques": {
-        "puissance": 1000,
-        "poids": 2000,
+        "puissance": 2000,
+        "poids": 4000,
         "longueur": 5,
         "largeur": 3,
-        "carburant": "ethanol"
+        "carburant": "E-98"
     },
-    "couleur": "FFFFFF"
+    "couleur": "EFD345"
 }
 ```
 
 * DELETE `voiture/get/{immat}`
-  Return 204 if voiture is deleted
+  Return 204
 
 
 ### Marque
@@ -103,26 +105,26 @@ example of body :
 example of body :
 ```
 {
-  "nom": "Renauld",
-  "anneeCreation": 1970,
-  "pays": "FRANCE"
+    "nom": "Test",
+    "anneeCreation": 2023,
+    "pays": "FRANCE"
 }
 ```
 
-* UPDATE `/marque/getAll`
+* UPDATE `/marque/update/{nom}`
   Return 204 if marque is modified
 
 example of body :
 ```
 {
-  "nom": "Renauld",
-  "anneeCreation": 1970,
-  "pays": "FRANCE"
+    "nom": "Test1",
+    "anneeCreation": 2023,
+    "pays": "SPAIN"
 }
 ```
 
-* DELETE `marque/get/{nom}`
-  Return 204 if marque is deleted
+* DELETE `marque/delete/{nom}`
+  Return 204
 
 ### Entretien
 

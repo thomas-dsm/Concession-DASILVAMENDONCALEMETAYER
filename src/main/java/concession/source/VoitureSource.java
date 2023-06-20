@@ -50,13 +50,13 @@ public class VoitureSource {
         return result.wasAcknowledged();
     }
 
-    public boolean updateOne(Voiture voiture, Voiture oldVoiture)
+    public boolean updateOne(Voiture oldVoiture, Voiture newVoiture)
     {
         Document documentUpdate = new Document();
-        documentUpdate.put("$set", convertToDocument(oldVoiture));
+        documentUpdate.put("$set", convertToDocument(newVoiture));
 
         UpdateResult result = repository.updateOne(
-                convertToDocument(voiture),
+                convertToDocument(oldVoiture),
                 documentUpdate
         );
 
@@ -70,13 +70,13 @@ public class VoitureSource {
         return result.wasAcknowledged();
     }
 
-    private Voiture convertToVoiture(Document docVoiture){
-
+    private Voiture convertToVoiture(Document docVoiture)
+    {
         return new Voiture(
                 docVoiture.getObjectId("marque_id").toString(),
                 docVoiture.getString("immat"),
                 docVoiture.getDate("date_immat"),
-                docVoiture.getInteger("prix"),
+                docVoiture.getDouble("prix"),
                 docVoiture.getList("type", String.class),
                 convertToCaracteristique(docVoiture.get("caracteristiques", Document.class)),
                 docVoiture.getString("couleur")
@@ -104,7 +104,7 @@ public class VoitureSource {
 
         caracteristiqueDocument.append("puissance", caracteristique.getPuissance());
         caracteristiqueDocument.append("poids", caracteristique.getPoids());
-        caracteristiqueDocument.append("longeur", caracteristique.getLongueur());
+        caracteristiqueDocument.append("longueur", caracteristique.getLongueur());
         caracteristiqueDocument.append("largeur", caracteristique.getLargeur());
         caracteristiqueDocument.append("carburant", caracteristique.getCarburant());
 

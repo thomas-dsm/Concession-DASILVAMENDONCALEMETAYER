@@ -58,14 +58,14 @@ public class MarqueRepository extends ConcessionRepository {
     }
 
     @Override
-    public UpdateResult updateOne(Document marque, Document marque2)
+    public UpdateResult updateOne(Document marqueQuery, Document marqueUpdate)
     {
         try (MongoClient mongoClient = MongoClients.create(getUrl()))
         {
             MongoDatabase database = mongoClient.getDatabase("concession");
             MongoCollection<Document> collection = database.getCollection("marques");
 
-            return collection.updateOne(marque, marque2);
+            return collection.updateOne(marqueQuery, marqueUpdate);
         }
     }
 

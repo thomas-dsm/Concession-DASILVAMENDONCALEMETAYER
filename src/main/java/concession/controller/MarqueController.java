@@ -62,10 +62,10 @@ public class MarqueController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateOne(MarqueDTO marqueDTO, String nom)
     {
-        Marque marque = convertToMarque(marqueDTO);
+        Marque newMarque = convertToMarque(marqueDTO);
         Marque oldMarque = source.getOne(nom);
 
-        if (source.updateOne(marque, oldMarque))
+        if (source.updateOne(oldMarque, newMarque))
         {
             return Response.status(204).build();
         }

@@ -49,13 +49,13 @@ public class MarqueSource {
         return result.wasAcknowledged();
     }
 
-    public boolean updateOne(Marque marque, Marque oldMarque)
+    public boolean updateOne(Marque oldMarque, Marque newMarque)
     {
         Document documentUpdate = new Document();
-        documentUpdate.put("$set", convertToDocument(oldMarque));
+        documentUpdate.put("$set", convertToDocument(newMarque));
 
         UpdateResult result = repository.updateOne(
-                convertToDocument(marque),
+                convertToDocument(oldMarque),
                 documentUpdate
         );
 

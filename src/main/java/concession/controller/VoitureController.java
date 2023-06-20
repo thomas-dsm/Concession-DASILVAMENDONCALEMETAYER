@@ -66,11 +66,10 @@ public class VoitureController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateOne(VoitureDTO voitureDTO, String immat)
     {
-        Voiture voiture = convertToVoiture(voitureDTO);
-
+        Voiture newVoiture = convertToVoiture(voitureDTO);
         Voiture oldVoiture = source.getOne(immat);
 
-        if (source.updateOne(voiture, oldVoiture))
+        if (source.updateOne(oldVoiture, newVoiture))
         {
             return Response.status(204).build();
         }
