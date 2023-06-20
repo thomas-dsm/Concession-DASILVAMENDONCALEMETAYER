@@ -9,7 +9,7 @@
   "date_immat": {
     "$date": "2023-06-14T00:00:00.000Z"
   },
-  "prix": 40000,
+  "prix": 39999.99,
   "type": [
     "sportive"
   ],
@@ -33,7 +33,7 @@
   "date_immat": {
     "$date": "2023-06-14T00:00:00.000Z"
   },
-  "prix": 20000,
+  "prix": 19999.99,
   "type": [
     "citadine"
   ],
@@ -57,7 +57,7 @@
   "date_immat": {
     "$date": "2023-06-14T00:00:00.000Z"
   },
-  "prix": 40000,
+  "prix": 49999.99,
   "type": [
     "beline"
   ],
@@ -81,7 +81,7 @@
   "date_immat": {
     "$date": "2023-06-14T00:00:00.000Z"
   },
-  "prix": 40000,
+  "prix": 59999.99,
   "type": [
     "sportive",
     "suv"
