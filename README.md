@@ -144,8 +144,8 @@ example of body :
 example of body :
 ```
 {
-  "date": "2023-06-12T14:50:16.000+00:00",
-  "description": "vidange", 
-  "garage": "Garage de Toto"
+    "date": "2022-08-12T14:50:16.000+00:00",
+    "description": "vidange", 
+    "garage": "Feu Vert"
 }
 ```
