@@ -38,7 +38,14 @@ public class MarqueController {
     @Produces(MediaType.APPLICATION_JSON)
     public MarqueDTO getOne(String nom)
     {
-        return convertToMarqueDTO(source.getOne(nom));
+        try
+        {
+            return convertToMarqueDTO(source.getOne(nom));
+        }
+        catch (NullPointerException exception)
+        {
+            throw new NotFoundException("No Marque found");
+        }
     }
 
     @POST

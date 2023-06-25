@@ -5,10 +5,7 @@ import concession.controller.dto.VoitureDTO;
 import concession.source.EntretienSource;
 import concession.source.model.Entretien;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -28,12 +25,17 @@ public class EntretienController {
     {
         List<EntretienDTO> entretienDTOList = new ArrayList<>();
 
-        for (Entretien entretien : source.getAllByVoiture(voiture.getImmat()))
+        try
         {
-            entretienDTOList.add(convertToEntretienDTO(entretien));
-        }
+            for (Entretien entretien : source.getAllByVoiture(voiture.getImmat())) {
+                entretienDTOList.add(convertToEntretienDTO(entretien));
+            }
 
-        return entretienDTOList;
+            return entretienDTOList;
+        }
+        catch (NullPointerException exception){
+            throw new NotFoundException("No Immat found");
+        }
     }
 
     @POST

@@ -38,11 +38,16 @@ public class VoitureController {
     @GET
     @Path("/get/{immat}")
     @Produces(MediaType.APPLICATION_JSON)
-    public VoitureDTO getOne(String immat) {
-
-        Voiture voiture = source.getOne(immat);
-
-        return convertToVoitureDTO(voiture);
+    public VoitureDTO getOne(String immat)
+    {
+        try
+        {
+            return convertToVoitureDTO(source.getOne(immat));
+        }
+        catch (NullPointerException exception)
+        {
+            throw new NotFoundException("No voiture found");
+        }
     }
 
     @POST

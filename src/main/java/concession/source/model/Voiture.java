@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author tdasilvamendonca
  */
-public class Voiture extends Caracteristique {
+public class Voiture {
     private String marqueId;
     private String immat;
     private Date dateImmat;

@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author tdasilvamendonca
  */
-public class Entretien extends Voiture {
+public class Entretien {
     private String voitureId;
     private Date date;
     private String description;
