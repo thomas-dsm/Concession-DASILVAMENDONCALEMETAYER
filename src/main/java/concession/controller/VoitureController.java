@@ -8,6 +8,7 @@ import concession.source.model.Voiture;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.NoContentException;
 import jakarta.ws.rs.core.Response;
 
 import java.util.ArrayList;
@@ -71,15 +72,22 @@ public class VoitureController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateOne(VoitureDTO voitureDTO, String immat)
     {
-        Voiture newVoiture = convertToVoiture(voitureDTO);
-        Voiture oldVoiture = source.getOne(immat);
-
-        if (source.updateOne(oldVoiture, newVoiture))
+        try
         {
-            return Response.status(204).build();
-        }
+            Voiture newVoiture = convertToVoiture(voitureDTO);
+            Voiture oldVoiture = source.getOne(immat);
 
-        return Response.status(409).build();
+            if (source.updateOne(oldVoiture, newVoiture))
+            {
+                return Response.status(204).build();
+            }
+
+            return Response.status(409).build();
+        }
+        catch (NullPointerException exception)
+        {
+            throw new NotFoundException("No voiture found");
+        }
     }
 
     @DELETE

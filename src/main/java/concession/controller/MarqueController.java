@@ -69,15 +69,22 @@ public class MarqueController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateOne(MarqueDTO marqueDTO, String nom)
     {
-        Marque newMarque = convertToMarque(marqueDTO);
-        Marque oldMarque = source.getOne(nom);
-
-        if (source.updateOne(oldMarque, newMarque))
+        try
         {
-            return Response.status(204).build();
-        }
+            Marque newMarque = convertToMarque(marqueDTO);
+            Marque oldMarque = source.getOne(nom);
 
-        return Response.status(409).build();
+            if (source.updateOne(oldMarque, newMarque))
+            {
+                return Response.status(204).build();
+            }
+
+            return Response.status(409).build();
+        }
+        catch (NullPointerException exception)
+        {
+            throw new NotFoundException("No Marque found");
+        }
     }
 
     @DELETE
